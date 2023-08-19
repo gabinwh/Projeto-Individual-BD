@@ -21,8 +21,12 @@ public class UsuarioController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        List<Usuario> usuarios = await _dataContext.Usuarios.ToListAsync();
-        return Ok(usuarios);
+        try
+        {
+            List<Usuario> usuarios = await _dataContext.Usuarios.ToListAsync();
+
+            return Ok(usuarios);
+        }catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
     [HttpPost]
