@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TrabPraticoBDIndividual.DTO;
 using TrabPraticoBDIndividual.Entities;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace TrabPraticoBDIndividual.Controllers;
 
