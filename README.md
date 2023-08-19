@@ -16,6 +16,6 @@ Os endpoints feito nesse projeto foram apenas o de cadastrar usuário (POST) e o
 - MySQL;
 
 ## Observações
-- Antes de iniciar o projeto é necessário configurar a conexão do banco de dados no arquivo "DataContext";
+- Antes de iniciar o projeto é necessário configurar a conexão do banco de dados no arquivo "Program";
 
 
