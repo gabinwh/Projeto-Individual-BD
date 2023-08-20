@@ -10,60 +10,39 @@ namespace TrabPraticoBDIndividual.Controllers;
 [Route("[controller]")]
 public class UsuarioController : ControllerBase
 {
-    private readonly DataContext _dataContext;
     private readonly IMapper _mapper;
+    private static List<Usuario?> _usuariosList = new List<Usuario?>();
 
-    public UsuarioController(DataContext dataContext, IMapper mapper)
+    public UsuarioController(IMapper mapper)
     { 
-        _dataContext = dataContext; 
         _mapper = mapper;
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public List<UsuarioResponse> GetAll()
     {
-        try
-        {
-            List<Usuario> usuarios = await _dataContext.Usuarios.ToListAsync();
-
-            return Ok(usuarios);
-        }catch (Exception ex) { return BadRequest(ex.Message); }
+            return _mapper.Map<List<UsuarioResponse>>(_usuariosList);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(int id)
+    public UsuarioResponse Get(int id)
     {
-        try
-        {
-            Usuario? usuario = await _dataContext.Usuarios.FindAsync(id);
+        if(_usuariosList.Count() == 0) { throw new NullReferenceException("A entidade não existe"); }
+        Usuario? usuario = _usuariosList.FirstOrDefault(u => u.Id == id);
 
-            if(usuario == null) throw new NullReferenceException("A entidade não existe");
+        if(usuario == null) throw new NullReferenceException("A entidade não existe");
 
-            return Ok(usuario);
-        }
-        catch (Exception ex) { return BadRequest(ex.Message); }
+        return _mapper.Map<UsuarioResponse>(usuario); 
+
+
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(UsuarioStoreRequest request)
+    public UsuarioResponse Add(UsuarioStoreRequest request)
     {
-       
-        try
-        {
-            var validator = new UsuarioValidation();
-            var results = validator.Validate(request);
-            if (!results.IsValid) throw new Exception(results.ToString());
+        Usuario usuario = _mapper.Map<UsuarioStoreRequest, Usuario>(request);
+        usuario.Id = _usuariosList.Count() +1;
+        _usuariosList.Add(usuario);
 
-            Usuario usuario = _mapper.Map<UsuarioStoreRequest, Usuario>(request);
-
-            _dataContext.Usuarios.Add(usuario);
-            await _dataContext.SaveChangesAsync();
-
-            return Created("Sucesso", _mapper.Map<Usuario, UsuarioResponse>(usuario));
-        }
-        catch (Exception ex)
-        {
-
-            return BadRequest(ex.Message);
-        }
+        return _mapper.Map<UsuarioResponse>(usuario);
     }
 }
