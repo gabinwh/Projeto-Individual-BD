@@ -17,6 +17,7 @@ Os endpoints feito nesse projeto foram apenas o de cadastrar usuário (POST) e o
 
 ## Observações
 - O projeto possui documentação no Swagger;
+- Ao iniciar a API, o Swagger será iniciado também;
 - Antes de iniciar o projeto é necessário configurar a conexão do banco de dados no arquivo "Program";
 - Ao tentar cadastrar um usuário com CPF que se inicia em "0" (zero), será preciso digitar o CPF sem os 0 (zeros) iniciais;
 
